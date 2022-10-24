@@ -118,7 +118,7 @@ get_met_data <- function(station_id,
     ######################## edited #######################
     tbl_i <- 
       readr::read_fwf(
-        path,
+        data_files[i],
         readr::fwf_widths(column_widths()),
         col_types = "ccciiiiicciiccicciccicicccicccciccicic"
       )
