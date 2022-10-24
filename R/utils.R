@@ -38,13 +38,15 @@ trim_tbl_to_years <- function(tbl, years) {
 
 # Define column widths of the fixed-width data
 # in the mandatory section of the data files
+# ###################### edited ############################
 column_widths <- function() {
   
   c(
-    4, 6, 5, 4, 2, 2, 2, 2, 1, 6, 7, 5, 5, 5, 4, 3, 1,
-    1, 4, 1, 5, 1, 1, 1, 6, 1, 1, 1, 5, 1, 5, 1, 5, 1
+    4, 6, 5, 4, 2, 2, 2, 2, 1, 1,5, 7, 5, 1,4, 5, 4, 3, 1,
+    1, 4, 1, 5, 1, 1, 1, 6, 1, 1, 1, 1, 4, 1, 1, 4, 1, 5, 1
   )
 }
+
 
 get_tz_for_station <- function(station_id) {
   

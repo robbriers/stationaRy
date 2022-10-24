@@ -115,15 +115,28 @@ get_met_data <- function(station_id,
     
     # Read data from mandatory data section of each file,
     # which is a fixed-width string
+    ######################## edited #######################
     tbl_i <- 
       readr::read_fwf(
-        data_files[i],
+        path,
         readr::fwf_widths(column_widths()),
-        col_types = "ccciiiiiciicicciccicicccicccicicic"
+        col_types = "ccciiiiicciiccicciccicicccicccciccicic"
       )
     
+    ############## new code
+    bl_i <- tbl_i %>%
+      mutate(temp_change = case_when(X31 == "-" ~ -1,
+                                     X31 =="+" ~ 1))
+    tbl_i <- tbl_i %>%
+      mutate(X32 = X32*temp_change)
+    
+    tbl_i <- tbl_i %>%
+      mutate(dew_change = case_when(X34 == "-" ~ -1,
+                                    X34 =="+" ~ 1))
+    tbl_i <- tbl_i %>%
+      mutate(X35 = X35*temp_change)
     # Keep specific columns from the table
-    tbl_i <- tbl_i[, c(4:8, 16, 19, 21, 25, 29, 31, 33)]
+    tbl_i <- tbl_i[, c(4:8, 18, 21, 23, 27, 32, 35, 37)]
     
     # Apply names to the columns
     names(tbl_i) <-
@@ -131,7 +144,7 @@ get_met_data <- function(station_id,
         "year", "month", "day", "hour", "minute", "wd", "ws",
         "ceil_hgt", "visibility", "temp", "dew_point", "atmos_pres"
       )
-    
+    ######################################################
     tbl_i <-
       tbl_i %>%
       dplyr::mutate(wd = dplyr::case_when(
