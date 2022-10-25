@@ -47,7 +47,6 @@ column_widths <- function() {
   )
 }
 
-
 get_tz_for_station <- function(station_id) {
   
   # Get the tz name in the local `history_tbl`

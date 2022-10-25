@@ -122,20 +122,19 @@ get_met_data <- function(station_id,
         readr::fwf_widths(column_widths()),
         col_types = "ccciiiiicciiccicciccicicccicccciccicic"
       )
+#    print("initial structure")
+#    print(str(tbl_i))
+    # air temp
+    tbl_i <-
+      tbl_i %>%
+      dplyr::mutate(X32 = if_else(X31=="-", X32*-1, X32*1))
     
+    # dew point
+    tbl_i <-
+      tbl_i %>%
+      dplyr::mutate(X35 = if_else(X34=="-", X35*-1, X35*1))
     ############## new code
-    bl_i <- tbl_i %>%
-      mutate(temp_change = case_when(X31 == "-" ~ -1,
-                                     X31 =="+" ~ 1))
-    tbl_i <- tbl_i %>%
-      mutate(X32 = X32*temp_change)
     
-    tbl_i <- tbl_i %>%
-      mutate(dew_change = case_when(X34 == "-" ~ -1,
-                                    X34 =="+" ~ 1))
-    tbl_i <- tbl_i %>%
-      mutate(X35 = X35*temp_change)
-    # Keep specific columns from the table
     tbl_i <- tbl_i[, c(4:8, 18, 21, 23, 27, 32, 35, 37)]
     
     # Apply names to the columns
@@ -145,6 +144,10 @@ get_met_data <- function(station_id,
         "ceil_hgt", "visibility", "temp", "dew_point", "atmos_pres"
       )
     ######################################################
+    
+#    print("With names")
+#    print(str(tbl_i))
+    
     tbl_i <-
       tbl_i %>%
       dplyr::mutate(wd = dplyr::case_when(
@@ -210,7 +213,8 @@ get_met_data <- function(station_id,
     
     tbl <- dplyr::bind_rows(tbl, tbl_i)
   }
-  
+  # checking structure here
+#  print(str(tbl))
   if (is.null(add_fields) & full_data == FALSE) {
     
     if (isTRUE(make_hourly)) {
